@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Button, Card } from "react-bootstrap";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-
+import "./movie-view.scss"
 
 
 export const MovieView = ({ movies }) => {
@@ -12,7 +12,7 @@ export const MovieView = ({ movies }) => {
     const movie = movies.find((m) => m.id === movieId);
     return (
         <>
-            <Card>
+            <Card className="movieview">
                 <div>
                     <img className="w-100" src={movie.image} />
                 </div>
