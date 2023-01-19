@@ -3,10 +3,12 @@ import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { SignupView } from "../signup-view/signup-view";
+
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./main-view.scss";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -32,7 +34,17 @@ export const MainView = () => {
             title: doc.Title,
             image: doc.ImageURL,
             description: doc.Description,
-            genre: doc.Genre.Name
+            releaseYear: doc.ReleaseYear,
+            genre: {
+              name: doc.Genre.Name,
+              description: doc.Genre.Description,
+            },
+            director: {
+              name: doc.Director.Name,
+              bio: doc.Director.Bio,
+              birth: doc.Director.Birth,
+              death: doc.Director.Death,
+            },
           };
         });
 
@@ -42,7 +54,7 @@ export const MainView = () => {
   }, [token]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <NavigationBar
         user={user}
         onLoggedOut={() => {
@@ -61,7 +73,7 @@ export const MainView = () => {
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
-                    <SignupView />
+                    <SignupView style={{ border: "1px solid red" }} />
                   </Col>
                 )}
               </>
@@ -76,7 +88,7 @@ export const MainView = () => {
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
-                    <LoginView onLoggedIn={(user, token) => {
+                    <LoginView style={{ border: "1px solid red" }} onLoggedIn={(user, token) => {
                       setUser(user);
                       setToken(token);
                     }} />
@@ -113,8 +125,8 @@ export const MainView = () => {
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={5}>
-                        <MovieCard movie={movie} />
+                      <Col className="mb-4 moviemaincard" key={movie.id} md={3}>
+                        <MovieCard style={{ border: "1px solid red" }} movie={movie} />
                       </Col>
                     ))}
                   </>
