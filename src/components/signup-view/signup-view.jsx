@@ -23,9 +23,10 @@ export const SignupView = () => {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
-                "Content-Type": "application/json"
-            }
+                "Content-type": "application/json",
+            },
         }).then((response) => {
+            console.log(response);
             if (response.ok) {
                 alert("Signup successful");
                 window.location.reload();
@@ -37,7 +38,6 @@ export const SignupView = () => {
 
     return (
         <div className="formset">
-
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="signUpFormUsername">
                     <Form.Label>Username:</Form.Label>
@@ -46,37 +46,43 @@ export const SignupView = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
-                        minLength="3"
+                        minLength="5"
+                        placeholder="Enter a name"
                     />
                 </Form.Group>
 
-                <Form.Group controlId="signUpFormPassword">
+                <Form.Group controlId="formPassword">
                     <Form.Label>Password:</Form.Label>
                     <Form.Control
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder="Enter a password"
                     />
                 </Form.Group>
-                <Form.Group controlId="signUpFormEmail">
+
+                <Form.Group controlId="formEmail">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        placeholder="Enter a email"
                     />
                 </Form.Group>
-                <Form.Group controlId="signUpFormBirthday">
+
+                <Form.Group controlId="formBirthday">
                     <Form.Label>Birthday:</Form.Label>
                     <Form.Control
                         type="date"
                         value={birthday}
                         onChange={(e) => setBirthday(e.target.value)}
-                        required
+                        placeholder="Enter a birthday"
                     />
                 </Form.Group>
+
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
