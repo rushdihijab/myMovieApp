@@ -3,7 +3,7 @@ import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { SignupView } from "../signup-view/signup-view";
-
+import { ProfileView } from "../profile-view/profile-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
@@ -73,7 +73,7 @@ export const MainView = () => {
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
-                    <SignupView style={{ border: "1px solid red" }} />
+                    <SignupView />
                   </Col>
                 )}
               </>
@@ -88,7 +88,7 @@ export const MainView = () => {
                   <Navigate to="/" />
                 ) : (
                   <Col md={5}>
-                    <LoginView style={{ border: "1px solid red" }} onLoggedIn={(user, token) => {
+                    <LoginView onLoggedIn={(user, token) => {
                       setUser(user);
                       setToken(token);
                     }} />
@@ -107,7 +107,7 @@ export const MainView = () => {
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
-                  <Col md={8}>
+                  <Col md={8} xs={10}>
                     <MovieView movies={movies} />
                   </Col>
                 )}
@@ -126,10 +126,26 @@ export const MainView = () => {
                   <>
                     {movies.map((movie) => (
                       <Col className="mb-4 moviemaincard" key={movie.id} md={3}>
-                        <MovieCard style={{ border: "1px solid red" }} movie={movie} />
+                        <MovieCard movie={movie} />
                       </Col>
                     ))}
                   </>
+                )}
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <>
+                {!user ? (
+                  <Navigate to="/login" replace />
+                ) : user.length === 0 ? (
+                  <Col>No such user found!</Col>
+                ) : (
+                  <Col>
+                    <ProfileView user={user} movies={movies} />
+                  </Col>
                 )}
               </>
             }
