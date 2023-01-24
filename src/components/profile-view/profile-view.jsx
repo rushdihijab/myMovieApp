@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { MovieCard } from "../movie-card/movie-card";
 
-export const ProfileView = () => {
+export const ProfileView = ({ movies }) => {
     const storedToken = localStorage.getItem("token");
     const [token, setToken] = useState(storedToken ? storedToken : null);
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -11,6 +12,8 @@ export const ProfileView = () => {
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
     const [birthday, setBirthday] = useState();
+    let favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m._id))
+
 
 
     const handleSubmit = (event) => {
@@ -21,6 +24,9 @@ export const ProfileView = () => {
             Email: email,
             Birthday: birthday,
         };
+
+
+
 
         fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
             method: "PUT",
@@ -72,9 +78,10 @@ export const ProfileView = () => {
                     <span className="label">Email: </span>
                     <span className="value">{user.Email}</span>
                 </div>
+
                 <div className="user-info">
-                    <span className="label">Birthday: </span>
-                    <span className="value">{user.Birthday}</span>
+                    <span className="label">FaverMovie: </span>
+                    <span className="value">{user.FavoriteMovies}</span>
                 </div>
             </div>
             <h1>Update form</h1>
@@ -129,6 +136,7 @@ export const ProfileView = () => {
                         Submit
                     </Button>
                 </div>
+
                 <div><Button
                     onClick={() => handleDeregister(user._id)}
                     className="button-delete"
@@ -136,8 +144,17 @@ export const ProfileView = () => {
                     variant="danger"
                 >
                     Delete Account
-                </Button></div>
+                </Button>
+                </div>
             </Form>
-        </div>
+            <>
+                <h1>Favorite Movies</h1>
+                {favoriteMovies.map((movie) => (
+                    <Col className="mb-4 movie-maincard" key={movie.id} md={3}>
+                        <span> {movie.title} </span>
+                    </Col>
+                ))}
+            </>
+        </div >
     );
 };
