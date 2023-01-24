@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
+import { useState, useEffect } from "react";
 import "./movie-view.scss"
 
 
@@ -14,40 +15,44 @@ export const MovieView = ({ movies }) => {
 
     const movie = movies.find((m) => m.id === movieId);
 
+    const storedToken = localStorage.getItem("token");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const [token] = useState(storedToken ? storedToken : null);
+    const [user] = useState(storedUser ? storedUser : null);
 
-    // const handleFavorite = () => {
-    //     fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username + "/movies/" + movie._id, {
-    //         method: "POST",
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //             "Content-Type": "application/json"
-    //         }
-    //     }).then((response) => {
-    //         alert("Added to favorites!");
-    //         return response.json();
-    //     }).then(data => updateUser(data))
-    //         .catch(err => {
-    //             alert("Something went wrong");
-    //         });
-    // };
 
-    // const handleRemoveFavorite = () => {
-    //     fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username + "/movies/" + movie._id, {
-    //         method: "DELETE",
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //             "Content-Type": "application/json"
-    //         }
-    //     }).then((response) => {
-    //         if (response.ok) {
-    //             alert("Removed from favorites");
-
-    //             updateUser(newUser);
-    //         } else {
-    //             alert("Something went wrong");
-    //         }
-    //     });
-    // };
+    const handleFavorite = () => {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username + "/movies/" + movie.id, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }).then((response) => {
+            console.log(response);
+            if (response.ok) {
+                alert("Add movie to favorite");
+                window.location.reload();
+            } else {
+                alert("add movie failed");
+            }
+        });
+    };
+    const handleRemoveFavorite = () => {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username + "/movies/" + movie.id, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }).then((response) => {
+            if (response.ok) {
+                alert("Removed from favorites");
+            } else {
+                alert("Something went wrong");
+            }
+        });
+    };
 
 
     return (
@@ -96,26 +101,32 @@ export const MovieView = ({ movies }) => {
                         </div>
                     </Card.Body>
                     <Card.Footer>
-                        <Link to="/">
-                            <Button className="btn-login"> Back </Button>
-                        </Link>
-                        {/* {
-                            storedUser.FavoriteMovies.indexOf(movie._id) >= 0 ? (
-                                <Button
-                                    variant="danger"
-                                    onClick={() => handleRemoveFavorite(movie._id, "add")}
-                                >
-                                    Remove from Favorites
-                                </Button>
-                            ) : (
-                                <Button
-                                    className="button-add-favorite"
-                                    onClick={() => handleFavorite(movie._id, "add")}
-                                >
-                                    + Add to Favorites
-                                </Button>
-                            )
-                        } */}
+                        <div>
+                            <Link to="/">
+                                <Button className="btn-back"> Back </Button>
+                            </Link>
+                        </div>
+
+                        <Button
+                            className="btn-add"
+                            variant="success"
+                            onClick={() => handleFavorite(movie.id, "add")}
+                        >
+                            + Add to Favorites
+                        </Button>
+
+
+                        <Button
+                            className="btn-remove"
+                            variant="danger"
+                            onClick={() => handleRemoveFavorite(movie.id, "add")}
+                        >
+                            Remove from Favorites
+                        </Button>
+
+
+
+
                     </Card.Footer>
                 </Card>
             </Row>
@@ -123,21 +134,3 @@ export const MovieView = ({ movies }) => {
     );
 };
 
-MovieView.propTypes = {
-    movies: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        Director: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-        }),
-        Genre: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            description: PropTypes.string.isRequired,
-        }),
-        Director: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            bie: PropTypes.string.isRequired,
-            birth: PropTypes.string.isRequired,
-        }),
-    }).isRequired,
-};
