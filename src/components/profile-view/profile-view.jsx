@@ -150,7 +150,7 @@ export const ProfileView = ({ movies }) => {
             <>
                 <h1>Favorite Movies</h1>
                 {favoriteMovies.map((movie) => (
-                    <Col className="mb-4 movie-maincard" key={movie.id} md={3}>
+                    <Col className="mb-4 moviemaincard" key={movie.id} md={3}>
                         <span> {movie.title} </span>
                     </Col>
                 ))}
