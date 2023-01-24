@@ -46835,7 +46835,7 @@ const ProfileView = ({ movies  })=>{
                         columnNumber: 17
                     }, undefined),
                     favoriteMovies.map((movie)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Col, {
-                            className: "mb-4 movie-maincard",
+                            className: "mb-4 moviemaincard",
                             md: 3,
                             children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
                                 children: [
