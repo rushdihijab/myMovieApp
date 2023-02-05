@@ -134,7 +134,7 @@ export const ProfileView = (props) => {
                 </div>
 
                 <div><Button
-                    onClick={() => handleDeregister(user._id)}
+                    onClick={() => handleDeregister(props.user._id)}
                     className="button-delete"
                     type="submit"
                     variant="danger"
