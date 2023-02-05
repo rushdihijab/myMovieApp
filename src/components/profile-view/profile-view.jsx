@@ -4,19 +4,20 @@ import Form from "react-bootstrap/Form";
 import { MovieCard } from "../movie-card/movie-card";
 import Col from 'react-bootstrap/Col';
 
-export const ProfileView = ({ movies }) => {
+export const ProfileView = (props) => {
     const storedToken = localStorage.getItem("token");
     const [token, setToken] = useState(storedToken ? storedToken : null);
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    const [user, setUser] = useState(storedUser ? storedUser : null);
+    // const [user, setUser] = useState(storedUser ? storedUser : null);
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
     const [birthday, setBirthday] = useState();
-    let favoriteMovies = movies.filter((m) =>
-        user.FavoriteMovies.includes(m.id)
+    console.log("user", props.user)
+    let favoriteMovies = props.movies.filter((m) =>
+        props.user.FavoriteMovies.includes(m.id)
     );
-
+    console.log("favoritemovies", favoriteMovies)
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = {
@@ -72,11 +73,11 @@ export const ProfileView = ({ movies }) => {
                 <h1>Profile-Info</h1>
                 <div className="user-info">
                     <span className="label">Username: </span>
-                    <span className="value">{user.Username}</span>
+                    <span className="value">{props.user.Username}</span>
                 </div>
                 <div className="user-info">
                     <span className="label">Email: </span>
-                    <span className="value">{user.Email}</span>
+                    <span className="value">{props.user.Email}</span>
                 </div>
             </div>
             <h1>Update form</h1>
