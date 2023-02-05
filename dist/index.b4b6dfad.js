@@ -46783,7 +46783,7 @@ const ProfileView = (props)=>{
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                         children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
-                            onClick: ()=>handleDeregister(user._id),
+                            onClick: ()=>handleDeregister(props.user._id),
                             className: "button-delete",
                             type: "submit",
                             variant: "danger",
