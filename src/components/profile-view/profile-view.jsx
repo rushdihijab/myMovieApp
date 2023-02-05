@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { MovieCard } from "../movie-card/movie-card";
+import Col from 'react-bootstrap/Col';
 
 export const ProfileView = ({ movies }) => {
     const storedToken = localStorage.getItem("token");
@@ -12,9 +13,9 @@ export const ProfileView = ({ movies }) => {
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
     const [birthday, setBirthday] = useState();
-    let favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m._id))
-
-
+    let favoriteMovies = movies.filter((m) =>
+        user.FavoriteMovies.includes(m.id)
+    );
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -23,9 +24,8 @@ export const ProfileView = ({ movies }) => {
             Password: password,
             Email: email,
             Birthday: birthday,
+
         };
-
-
 
 
         fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
@@ -77,11 +77,6 @@ export const ProfileView = ({ movies }) => {
                 <div className="user-info">
                     <span className="label">Email: </span>
                     <span className="value">{user.Email}</span>
-                </div>
-
-                <div className="user-info">
-                    <span className="label">FaverMovie: </span>
-                    <span className="value">{user.FavoriteMovies}</span>
                 </div>
             </div>
             <h1>Update form</h1>
@@ -148,12 +143,14 @@ export const ProfileView = ({ movies }) => {
                 </div>
             </Form>
             <>
-                <h1>Favorite Movies</h1>
-                {favoriteMovies.map((movie) => (
-                    <Col className="mb-4 moviemaincard" key={movie.id} md={3}>
-                        <span> {movie.title} </span>
-                    </Col>
-                ))}
+                <p>Favorite Movies:</p>
+                <ul>
+                    {favoriteMovies.map(movie => (
+                        <li key={movie._id}>{movie.title}
+                        </li>
+
+                    ))}
+                </ul>
             </>
         </div >
     );
