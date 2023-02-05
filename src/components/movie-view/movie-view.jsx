@@ -110,7 +110,7 @@ export const MovieView = ({ movies }) => {
                         <Button
                             className="btn-add"
                             variant="success"
-                            onClick={() => handleFavorite(movie.id, "add")}
+                            onClick={() => handleFavorite(movie.id)}
                         >
                             + Add to Favorites
                         </Button>
@@ -119,7 +119,7 @@ export const MovieView = ({ movies }) => {
                         <Button
                             className="btn-remove"
                             variant="danger"
-                            onClick={() => handleRemoveFavorite(movie.id, "add")}
+                            onClick={() => handleRemoveFavorite(movie.id)}
                         >
                             Remove from Favorites
                         </Button>
