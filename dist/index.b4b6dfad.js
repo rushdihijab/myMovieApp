@@ -46529,8 +46529,8 @@ const ProfileView = (props)=>{
     _s();
     const storedToken = localStorage.getItem("token");
     const [token, setToken] = (0, _react.useState)(storedToken ? storedToken : null);
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    // const [user, setUser] = useState(storedUser ? storedUser : null);
+    // const storedUser = JSON.parse(localStorage.getItem("user"));
+    // // const [user, setUser] = useState(storedUser ? storedUser : null);
     const [username, setUsername] = (0, _react.useState)();
     const [password, setPassword] = (0, _react.useState)();
     const [email, setEmail] = (0, _react.useState)();
@@ -46546,7 +46546,7 @@ const ProfileView = (props)=>{
             Email: email,
             Birthday: birthday
         };
-        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + props.user.Username, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -46562,7 +46562,7 @@ const ProfileView = (props)=>{
         });
     };
     const handleDeregister = ()=>{
-        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + props.user.Username, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
