@@ -7,8 +7,8 @@ import Col from 'react-bootstrap/Col';
 export const ProfileView = (props) => {
     const storedToken = localStorage.getItem("token");
     const [token, setToken] = useState(storedToken ? storedToken : null);
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    // const [user, setUser] = useState(storedUser ? storedUser : null);
+    // const storedUser = JSON.parse(localStorage.getItem("user"));
+    // // const [user, setUser] = useState(storedUser ? storedUser : null);
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
@@ -29,7 +29,7 @@ export const ProfileView = (props) => {
         };
 
 
-        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + props.user.Username, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -48,7 +48,7 @@ export const ProfileView = (props) => {
         });
     };
     const handleDeregister = () => {
-        fetch("https://my-movies-rushdi.herokuapp.com/users/" + user.Username, {
+        fetch("https://my-movies-rushdi.herokuapp.com/users/" + props.user.Username, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
