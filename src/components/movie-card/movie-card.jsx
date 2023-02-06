@@ -10,7 +10,11 @@ export const MovieCard = ({ movie }) => {
         <Container className="content">
             <Col>
                 <Card className="h-100; moviecardview" bg="dark" text="light">
-                    <Card.Img className="imgview" variant="top" crossOrigin="anonymous" src={movie.image} />
+                    <Card.Img
+                        className="cardimage"
+                        crossOrigin="anonymous"
+                        src={movie.image}
+                    />
                     <Card.Body>
                         <Card.Title className="title"> {movie.title} </Card.Title>
                     </Card.Body>
