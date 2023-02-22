@@ -7,17 +7,31 @@ import Col from 'react-bootstrap/Col';
 export const ProfileView = (props) => {
     const storedToken = localStorage.getItem("token");
     const [token, setToken] = useState(storedToken ? storedToken : null);
-    // const storedUser = JSON.parse(localStorage.getItem("user"));
-    // // const [user, setUser] = useState(storedUser ? storedUser : null);
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [email, setEmail] = useState();
-    const [birthday, setBirthday] = useState();
-    console.log("user", props.user)
-    let favoriteMovies = props.movies.filter((m) =>
-        props.user.FavoriteMovies.includes(m.id)
-    );
-    console.log("favoritemovies", favoriteMovies)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [birthday, setBirthday] = useState("");
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
+    const favMovies = props.movies.filter((movie) => favoriteMovies.includes(movie.id));
+
+    console.log("favMovies", favMovies)
+
+    useEffect(() => {
+        fetch(`https://my-movies-rushdi.herokuapp.com/users/${props.user.Username}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setFavoriteMovies(data.FavoriteMovies);
+                console.log("Favorite movies:", data.FavoriteMovies);
+            })
+            .catch((error) => console.log(error));
+    }, [props.user.Username, token]);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = {
@@ -40,13 +54,12 @@ export const ProfileView = (props) => {
             console.log(response);
             if (response.ok) {
                 alert("Update successful");
-                window.location.reload();
-
             } else {
                 alert("Update failed");
             }
         });
     };
+
     const handleDeregister = () => {
         fetch("https://my-movies-rushdi.herokuapp.com/users/" + props.user.Username, {
             method: "DELETE",
@@ -57,8 +70,6 @@ export const ProfileView = (props) => {
         }).then((response) => {
             if (response.ok) {
                 alert("Account successfully deleted");
-                window.location.reload();
-                setUser(null);
                 setToken(null);
                 localStorage.clear();
             } else {
@@ -85,74 +96,95 @@ export const ProfileView = (props) => {
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="signUpFormUsername">
                     <Form.Label>Username:</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        minLength="5"
-                        placeholder="Enter a name"
-                    />
+                    <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </Form.Group>
-
-                <Form.Group controlId="formPassword">
+                <Form.Group controlId="signUpFormPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="Enter a password"
-                    />
+                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
-
-                <Form.Group controlId="formEmail">
+                <Form.Group controlId="signUpFormEmail">
                     <Form.Label>Email:</Form.Label>
-                    <Form.Control
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="Enter a email"
-                    />
+                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
-
-                <Form.Group controlId="formBirthday">
+                <Form.Group controlId="signUpFormBirthday">
                     <Form.Label>Birthday:</Form.Label>
-                    <Form.Control
-                        type="date"
-                        value={birthday}
-                        onChange={(e) => setBirthday(e.target.value)}
-                        required
-                        placeholder="Enter a birthday"
-                    />
+                    <Form.Control type="date" placeholder="MM/DD/YYYY" value={birthday} onChange={(e) => setBirthday(e.target.value)} />
                 </Form.Group>
-                <div>
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
-                </div>
-
-                <div><Button
-                    onClick={() => handleDeregister(props.user._id)}
-                    className="button-delete"
-                    type="submit"
-                    variant="danger"
-                >
-                    Delete Account
-                </Button>
-                </div>
+                <Button variant="primary" type="submit">Update</Button>
+                <Button variant="danger" onClick={handleDeregister}>Deregister</Button>
             </Form>
-            <>
-                <p>Favorite Movies:</p>
-                <ul>
-                    {favoriteMovies.map(movie => (
-                        <li key={movie._id}>{movie.title}
-                        </li>
 
+            <h1>Favorite Movies</h1>
+            <div className="favorite-movies">
+                <div>
+                    {favMovies.map((movie) => (
+                        <MovieCard
+                            key={movie._id}
+                            movie={movie}
+                        />
                     ))}
-                </ul>
-            </>
+                </div>
+
+            </div>
+
         </div >
     );
+
 };
+// export const ProfileView = ({ user, movies }) => {
+//     const [favoriteMovies, setFavoriteMovies] = useState([]);
+
+//     useEffect(() => {
+//         const fetchUser = async () => {
+//             const response = await fetch(
+//                 `https://my-movies-rushdi.herokuapp.com/users/${user.Username}`,
+//                 {
+//                     headers: {
+//                         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//                     },
+//                 }
+//             );
+//             const userData = await response.json();
+//             const favoriteMovieIds = userData.FavoriteMovies;
+//             const favoriteMovies = movies.filter((m) =>
+//                 favoriteMovieIds.includes(m._id)
+//             );
+//             setFavoriteMovies(favoriteMovies);
+//         };
+//         fetchUser();
+//     }, [user, movies]);
+
+//     const handleAddFavorite = async (movieId) => {
+//         const response = await fetch(
+//             `https://my-movies-rushdi.herokuapp.com/users/${user.Username}/movies/${movieId}`,
+//             {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+//                 },
+//             }
+//         );
+//         if (response.ok) {
+//             alert("Movie added to favorites");
+//         } else {
+//             alert("Failed to add movie to favorites");
+//         }
+//     };
+
+//     return (
+//         <div>
+//             <h1>Favorite Movies</h1>
+//             <div>
+//                 {favoriteMovies.map((movie) => (
+//                     <MovieCard
+//                         key={movie._id}
+//                         movie={movie}
+//                         onAddFavorite={handleAddFavorite}
+//                     />
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// };
+
