@@ -62,7 +62,7 @@ export const MovieView = ({ movies }) => {
                 <Card bg="dark" text="light">
                     <Card.Header>
                         <div className="title text-center">
-                            <span> {movie.title} </span>
+                            <span> {movie && movie.title} </span>
                         </div>
                     </Card.Header>
                     <Card.Body>
@@ -71,31 +71,31 @@ export const MovieView = ({ movies }) => {
                                 <Card.Img
                                     className="cardimage"
                                     crossOrigin="anonymous"
-                                    src={movie.image}
+                                    src={movie && movie.image}
                                 />
                             </div>
                             <div>
                                 <span className="labeltitle">Description: </span>
-                                <span className="description">{movie.description}</span>
+                                <span className="description">{movie && movie.description}</span>
                             </div>
                             <div>
                                 <span className="labeltitle">Release Year: </span>
-                                <span className="description">{movie.releaseYear}</span>
+                                <span className="description">{movie && movie.releaseYear}</span>
                             </div>
                             <div>
                                 <span className="labeltitle">Genre: </span>
-                                <span className="description">{movie.genre.name}</span>
+                                <span className="description">{movie && movie.genre && movie.genre.name}</span>
                                 <span className="labeltitle"> Description:</span>
-                                <span className="description">{movie.genre.description}</span>
+                                <span className="description">{movie && movie.genre && movie.genre.description}</span>
                             </div>
                             <div>
                                 <span className="labeltitle">Director: </span>
-                                <span className="description">{movie.director.name}</span>
+                                <span className="description">{movie && movie.director && movie.director.name}</span>
                                 <div>
                                     <span className="labeltitle">Bio </span>
-                                    <span className="description">{movie.director.bio}</span>
+                                    <span className="description">{movie && movie.director && movie.director.bio}</span>
                                     <span className="labeltitle">Birht </span>
-                                    <span className="description">{movie.director.birth}</span>
+                                    <span className="description">{movie && movie.director && movie.director.birth}</span>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,11 @@ export const MovieView = ({ movies }) => {
                         <Button
                             className="btn-add"
                             variant="success"
-                            onClick={() => handleFavorite(movie.id)}
+                            onClick={() => {
+                                if (movie && movie.id) {
+                                    handleFavorite(movie.id);
+                                }
+                            }}
                         >
                             + Add to Favorites
                         </Button>
@@ -119,13 +123,14 @@ export const MovieView = ({ movies }) => {
                         <Button
                             className="btn-remove"
                             variant="danger"
-                            onClick={() => handleRemoveFavorite(movie.id)}
+                            onClick={() => {
+                                if (movie && movie.id) {
+                                    handleRemoveFavorite(movie.id);
+                                }
+                            }}
                         >
                             Remove from Favorites
                         </Button>
-
-
-
 
                     </Card.Footer>
                 </Card>
