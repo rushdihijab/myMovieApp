@@ -19,6 +19,7 @@ export const MainView = () => {
 
 
 
+
   useEffect(() => {
     if (!token) {
       return;
@@ -107,7 +108,7 @@ export const MainView = () => {
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
-                  <Col md={4} xs={7}>
+                  <Col xs={8} sm={6} md={6} lg={3}>
                     <MovieView movies={movies}
                       user={user} />
                   </Col>
@@ -126,7 +127,7 @@ export const MainView = () => {
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4 moviemaincard" key={movie.id} md={3}>
+                      <Col className="mb-4 moviemaincard" key={movie.id} xs={8} sm={6} md={4} lg={3}>
                         <MovieCard movie={movie} />
                       </Col>
                     ))}
@@ -144,7 +145,7 @@ export const MainView = () => {
                 ) : user.length === 0 ? (
                   <Col>No such user found!</Col>
                 ) : (
-                  <Col>
+                  <Col xs={6} sm={6} md={6} lg={6}>
                     <ProfileView user={user} movies={movies} />
                   </Col>
                 )}
